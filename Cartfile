@@ -1,2 +1,3 @@
 github "Alamofire/Alamofire"
 github "marmelroy/Zip"
+github "1024jp/GzipSwift"

@@ -71,7 +71,7 @@ extension LocationService: LocationServiceProtocol {
         }
 
         Alamofire.download(fileURL, to: destination).response { response in
-            self.unzipFile()
+//            self.unzipFile()
             if let error = response.error {
                 print("File not loaded: \(error.localizedDescription)")
             }

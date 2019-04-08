@@ -6,5 +6,5 @@
 import Foundation
 
 protocol SelectCellDelegate: class {
-    func internalCollectionView(DidSelectItemAt indexPath: IndexPath, currentDataIsVisible: Bool)
+    func internalCollectionView(didSelectItemAt internalIndexPath: IndexPath, currentDataIsVisible: Bool)
 }

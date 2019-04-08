@@ -332,8 +332,7 @@ extension MainCollectionViewCell: UICollectionViewDataSource, UICollectionViewDe
             currentDataIsVisible = !currentDataIsVisible
         }
         
-        delegate?.internalCollectionView(DidSelectItemAt: indexPath, currentDataIsVisible: currentDataIsVisible)
-//        mainCollectionView.reloadData()
+        delegate?.internalCollectionView(didSelectItemAt: indexPath, currentDataIsVisible: currentDataIsVisible)
 
         // (2) how could I come up it and it-> (1)
         if previousSelectedIndexPath != nil {

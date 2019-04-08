@@ -5,7 +5,7 @@ final class WeatherViewController: UIViewController {
 
     // MARK: - Properties
 
-    private var selectedIndexPathInternalCollectionView : IndexPath?
+    private var selectedIndexPathInternalCollectionView: IndexPath?
     private var currentDataIsVisible = true
 
     typealias Dependencies = HasWeatherService & HasImageService & HasLocationService
@@ -316,7 +316,7 @@ extension WeatherViewController: WeatherViewControllerDelegate {
 
 extension WeatherViewController: SelectCellDelegate {
 
-    func internalCollectionView(DidSelectItemAt indexPath: IndexPath, currentDataIsVisible: Bool) {
+    func internalCollectionView(didSelectItemAt internalIndexPath: IndexPath, currentDataIsVisible: Bool) {
         selectedIndexPathInternalCollectionView = indexPath
         self.currentDataIsVisible = currentDataIsVisible
         mainCollectionView.reloadData()
