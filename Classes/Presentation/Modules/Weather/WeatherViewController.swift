@@ -317,7 +317,7 @@ extension WeatherViewController: WeatherViewControllerDelegate {
 extension WeatherViewController: SelectCellDelegate {
 
     func internalCollectionView(didSelectItemAt internalIndexPath: IndexPath, currentDataIsVisible: Bool) {
-        selectedIndexPathInternalCollectionView = indexPath
+        selectedIndexPathInternalCollectionView = internalIndexPath
         self.currentDataIsVisible = currentDataIsVisible
         mainCollectionView.reloadData()
     }
