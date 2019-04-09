@@ -87,8 +87,8 @@ final class LocationsViewController: UIViewController {
 
         let width = view.bounds.width
         activityIndicator.frame = view.bounds
-        inputSearchBar.frame = CGRect(x: 0, y: 20, width: width, height: 50)
-        locationsTableView.frame = CGRect(x: 0, y: 70, width: width, height: view.bounds.height - 70)
+        inputSearchBar.frame = CGRect(x: 0, y: 20 + safeAreaInsets.top, width: width, height: 50)
+        locationsTableView.frame = CGRect(x: 0, y: 70 + safeAreaInsets.top, width: width, height: view.bounds.height - 70)
     }
 
     // MARK: - Showing keyboard

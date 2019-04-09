@@ -201,7 +201,7 @@ class MainCollectionViewCell: UICollectionViewCell {
                                               height: contentView.bounds.height * 0.27)
 
         lastUpdateLabel.frame = CGRect(x: Constants.insets.left,
-                                       y: internalCollectionView.frame.minY - betweenViewsInset - 30,
+                                       y: internalCollectionView.frame.minY - betweenViewsInset - 24,
                                        width: viewsWidth,
                                        height: 16)
 
@@ -262,7 +262,7 @@ class MainCollectionViewCell: UICollectionViewCell {
                                               width: subViewsWidth - dayWeatherConditionImageView.bounds.width - 15,
                                               height: height * 0.4)
 
-        separatorView.frame = CGRect(x: 0, y: dayDescriptionTextView.frame.maxY + betweenForecastViewsInset,
+        separatorView.frame = CGRect(x: 0, y: dayDescriptionTextView.frame.maxY + 5,
                                      width: subViewsWidth,
                                      height: 1)
 

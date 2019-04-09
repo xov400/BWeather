@@ -123,9 +123,9 @@ final class WeatherViewController: UIViewController {
         dispatchGroup.enter()
         dependencies.weatherService.fatchWeatherForecasts(location: location,
                                                           success: { weatherForecastModel in
-                                                            self.lacationsForecastsArray.append(weatherForecastModel)
-                                                            model.daysForecastModels = self.createDaysForecastArray(from: weatherForecastModel)
-                                                            dispatchGroup.leave()
+            self.lacationsForecastsArray.append(weatherForecastModel)
+            model.daysForecastModels = self.createDaysForecastArray(from: weatherForecastModel)
+            dispatchGroup.leave()
         }, failure: { error in
             self.activityIndicatorView.stopAnimating()
             self.presentAlert(message: error.localizedDescription, handler: nil)
