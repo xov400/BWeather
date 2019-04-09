@@ -312,8 +312,6 @@ extension MainCollectionViewCell: UICollectionViewDataSource, UICollectionViewDe
             cell.weatherConditionImageView.image = UIImage(named: "no-image")
             dependencies.imageService.fatchImage(imageName: dayForecast.dayData.imageName, success: { image in
                 cell.weatherConditionImageView.image = image
-            }, failure: { error in
-                print(error.localizedDescription)
             })
             cell.dayTemperatureLabel.text = "\(dayForecast.dayData.temp)\u{00B0}"
             cell.nightTemperatureLabel.text = "\(dayForecast.nightData.temp)\u{00B0}"

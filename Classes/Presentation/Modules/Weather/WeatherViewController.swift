@@ -13,7 +13,6 @@ final class WeatherViewController: UIViewController {
     private let dependencies: Dependencies
 
     private var models: [LocationForecastModel] = []
-    private var isInitialy = true
     private var lacationsForecastsArray: [WeatherForecastResponseModel] = []
 
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
@@ -77,7 +76,7 @@ final class WeatherViewController: UIViewController {
     private func fetchData() {
         if models.count == 0 {
             tabBarController?.selectedIndex = 2
-            dependencies.locationService.fetchLocationFile(dispatchGroup: nil)
+            checkUpdatesLocationFile(dispatchGroup: nil)
             return
         }
         lacationsForecastsArray = []
@@ -86,15 +85,12 @@ final class WeatherViewController: UIViewController {
         DispatchQueue.global(qos: .background).async {
             let dispatchGroup = DispatchGroup()
 
-//            if self.isInitialy {
-//                self.dependencies.locationService.fetchLocationFile(dispatchGroup: dispatchGroup)
-//                self.isInitialy = false
-//            }
+            self.checkUpdatesLocationFile(dispatchGroup: dispatchGroup)
 
             self.models.forEach { model in
                 self.sendWeatherForecastRequest(model: model,
                                                 location: "\(model.location.name),\(model.location.country)",
-                    dispatchGroup: dispatchGroup)
+                                                dispatchGroup: dispatchGroup)
             }
 
             dispatchGroup.wait()
@@ -104,6 +100,21 @@ final class WeatherViewController: UIViewController {
                 self.mainCollectionView.reloadData()
             }
         }
+    }
+
+    private func checkUpdatesLocationFile(dispatchGroup: DispatchGroup?) {
+        let defaults = UserDefaults.standard
+
+        if let updateDate = defaults.value(forKey: "Update date") as? Date, updateDate != Date() {
+            return
+        }
+
+        self.dependencies.locationService.fetchLocationFile(dispatchGroup: dispatchGroup, failure: { error in
+            self.presentAlert(message: error.localizedDescription, handler: nil)
+        })
+
+        let updateDate = Date().addingTimeInterval(60 * 60 * 24 * 7)
+        defaults.setValue(updateDate, forKey: "Update date")
     }
 
     private func sendWeatherForecastRequest(model: LocationForecastModel,
@@ -230,8 +241,6 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
         cell.weatherConditionImageView.image = UIImage(named: "no-image")
         dependencies.imageService.fatchImage(imageName: nowForecast.weatherCondition[0].iconName, success: { image in
             cell.weatherConditionImageView.image = image
-        }, failure: { error in
-            self.presentAlert(message: error.localizedDescription, handler: nil)
         })
     }
 
@@ -259,8 +268,6 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
             cell.dayWeatherConditionImageView.image = UIImage(named: "no-image")
             dependencies.imageService.fatchImage(imageName: dayForecast.dayData.imageName, success: { image in
                 cell.dayWeatherConditionImageView.image = image
-            }, failure: { error in
-                self.presentAlert(message: error.localizedDescription, handler: nil)
             })
             cell.dayDescriptionTextView.text = """
             temperature: \(dayForecast.dayData.temp)\u{00B0}
@@ -281,8 +288,6 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
             cell.nightWeatherConditionImageView.image = UIImage(named: "no-image")
             dependencies.imageService.fatchImage(imageName: dayForecast.nightData.imageName, success: { image in
                 cell.nightWeatherConditionImageView.image = image
-            }, failure: { error in
-                self.presentAlert(message: error.localizedDescription, handler: nil)
             })
             cell.nightDescriptionTextView.text = """
             temperature: \(dayForecast.nightData.temp)\u{00B0}

@@ -5,7 +5,7 @@
 
 import Foundation
 import Alamofire
-import Zip
+import GZIP
 
 final class LocationService {
 
@@ -15,7 +15,6 @@ final class LocationService {
 
     private let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     private let archiveName = "city.list.json.gz"
-    private let fileName = "city.list.json"
     private var favouritesLocations: [LocationInformation]
 
 
@@ -31,66 +30,61 @@ final class LocationService {
         return shared!
     }
 
-    private func unzipFile() {
-        do {
-            let filePath = documentsURL.appendingPathComponent(archiveName)
-            let unzipDirectory = try Zip.quickUnzipFile(filePath)
-            print(unzipDirectory)
-        }
-        catch {
-            print("Unzip error: \(error.localizedDescription)")
-        }
-    }
-
-    private func deleteFile(name: String) {
+    private func deleteFile(name: String,
+                            success: @escaping (String) -> Void,
+                            failure: @escaping (Error) -> Void) {
         guard let name = documentsURL.check(forFile: name) else {
             return
         }
         do {
             let filePath = documentsURL.appendingPathComponent(name).path
             try FileManager.default.removeItem(atPath: filePath)
-            print("File \(name) deleted")
+            success("File \(name) deleted")
         } catch let error as NSError {
-            print("File not deleted: \(error.localizedDescription)")
+            failure(error)
         }
     }
 }
 
 extension LocationService: LocationServiceProtocol {
 
-    func fetchLocationFile(dispatchGroup: DispatchGroup?) {
+    func fetchLocationFile(dispatchGroup: DispatchGroup?, failure: @escaping (Error) -> Void) {
         dispatchGroup?.enter()
         let fileURL = URL(string: "http://bulk.openweathermap.org/sample/\(archiveName)")!
 
         let destination: DownloadRequest.DownloadFileDestination = { _, _ in
             var documentsURL = self.documentsURL
             documentsURL.appendPathComponent(self.archiveName)
-            print("File \(self.archiveName) loaded")
-            print("in \(documentsURL)")
+
+            print("File \(self.archiveName) loaded in \(documentsURL)")
+
             return (documentsURL, [.removePreviousFile, .createIntermediateDirectories])
         }
 
         Alamofire.download(fileURL, to: destination).response { response in
-//            self.unzipFile()
             if let error = response.error {
-                print("File not loaded: \(error.localizedDescription)")
+                failure(error)
             }
             dispatchGroup?.leave()
         }
     }
 
     func fetchLocationsFromFile(success: @escaping ([LocationInformation]) -> Void, failure: @escaping (Error) -> Void) {
-        guard let fileName = documentsURL.check(forFile: fileName) else {
+        guard let _ = documentsURL.check(forFile: archiveName) else {
             return
         }
 
+        let fileURL = documentsURL.appendingPathComponent(archiveName)
+        guard let data = NSData(contentsOf: fileURL),
+            data.isGzippedData(),
+            let unzipedData = data.gunzipped() else {
+                return
+        }
+
         do {
-            let data = try Data(contentsOf: documentsURL.appendingPathComponent(fileName), options: .mappedIfSafe)
-            let locationsArray = try JSONDecoder().decode([LocationInformation].self, from: data)
-            print("Load locations from file")
+            let locationsArray = try JSONDecoder().decode([LocationInformation].self, from: unzipedData)
             success(locationsArray)
         } catch let error {
-            print("Can't load locations from file")
             failure(error)
         }
     }

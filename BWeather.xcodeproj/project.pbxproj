@@ -53,6 +53,7 @@
 		1F4F52C2225A01F4003FD65D /* WeatherEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F5295225A01F4003FD65D /* WeatherEndpoint.swift */; };
 		1F4F52C3225A01F4003FD65D /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F5296225A01F4003FD65D /* WeatherService.swift */; };
 		1F4F52C4225A01F4003FD65D /* WeatherServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F5297225A01F4003FD65D /* WeatherServiceProtocol.swift */; };
+		1FDC3C42225C9E31008BE7A7 /* GZIP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FDC3C41225C9E31008BE7A7 /* GZIP.framework */; };
 		1FED2013225A03C30029146D /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED2012225A03C30029146D /* Alamofire.framework */; };
 		1FED2015225A03D20029146D /* Zip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FED2014225A03D20029146D /* Zip.framework */; };
 /* End PBXBuildFile section */
@@ -106,6 +107,7 @@
 		1F4F5295225A01F4003FD65D /* WeatherEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherEndpoint.swift; sourceTree = "<group>"; };
 		1F4F5296225A01F4003FD65D /* WeatherService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		1F4F5297225A01F4003FD65D /* WeatherServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherServiceProtocol.swift; sourceTree = "<group>"; };
+		1FDC3C41225C9E31008BE7A7 /* GZIP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GZIP.framework; path = Carthage/Build/iOS/GZIP.framework; sourceTree = "<group>"; };
 		1FED2012225A03C30029146D /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		1FED2014225A03D20029146D /* Zip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Zip.framework; path = Carthage/Build/iOS/Zip.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FDC3C42225C9E31008BE7A7 /* GZIP.framework in Frameworks */,
 				1FED2015225A03D20029146D /* Zip.framework in Frameworks */,
 				1FED2013225A03C30029146D /* Alamofire.framework in Frameworks */,
 			);
@@ -246,9 +249,9 @@
 			isa = PBXGroup;
 			children = (
 				1F4F5274225A01F4003FD65D /* AppConfiguration.swift */,
+				1F4F5283225A01F4003FD65D /* AppConfigurator.swift */,
 				1F4F5275225A01F4003FD65D /* Networking */,
 				1F4F5277225A01F4003FD65D /* Models */,
-				1F4F5283225A01F4003FD65D /* AppConfigurator.swift */,
 				1F4F5284225A01F4003FD65D /* Services */,
 			);
 			path = BusinessLogic;
@@ -297,8 +300,8 @@
 		1F4F5284225A01F4003FD65D /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				1F4F5285225A01F4003FD65D /* Settings */,
 				1F4F5288225A01F4003FD65D /* Services.swift */,
+				1F4F5285225A01F4003FD65D /* Settings */,
 				1F4F5289225A01F4003FD65D /* Favourites */,
 				1F4F528C225A01F4003FD65D /* Image */,
 				1F4F5290225A01F4003FD65D /* Locations */,
@@ -357,6 +360,7 @@
 		1FED2011225A03C20029146D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1FDC3C41225C9E31008BE7A7 /* GZIP.framework */,
 				1FED2014225A03D20029146D /* Zip.framework */,
 				1FED2012225A03C30029146D /* Alamofire.framework */,
 			);
@@ -440,6 +444,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Zip.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/GZIP.framework",
 			);
 			name = Carthage;
 			outputFileListPaths = (
@@ -645,6 +650,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = BWeather/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -667,6 +673,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = BWeather/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -17,11 +17,9 @@ final class FavouritesService: FavouritesServiceProtocol {
         do {
             let data = try Data(contentsOf: documentsURL.appendingPathComponent(favouritesFile), options: .mappedIfSafe)
             let favouritesLocations = try JSONDecoder().decode([LocationInformation].self, from: data)
-            print("FavouritesLocations is loaded")
             return favouritesLocations
         } catch {
             print("FavouritesLocations isn't be read")
-            print(documentsURL)
             return []
         }
     }
@@ -33,7 +31,6 @@ final class FavouritesService: FavouritesServiceProtocol {
             documentsURL.appendPathComponent(favouritesFile)
             print(documentsURL)
             try json.write(to: documentsURL)
-            print("Create file \(favouritesFile)")
         } catch {
             print("could't create file text.txt because of error: \(error)")
         }

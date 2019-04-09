@@ -10,5 +10,5 @@ protocol HasImageService {
 }
 
 protocol ImageServiceProtocol {
-    func fatchImage(imageName: String, success: @escaping (UIImage) -> Void, failure: @escaping (Error) -> Void)
+    func fatchImage(imageName: String, success: @escaping (UIImage) -> Void)
 }

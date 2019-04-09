@@ -10,7 +10,7 @@ protocol HasLocationService {
 }
 
 protocol LocationServiceProtocol {
-    func fetchLocationFile(dispatchGroup: DispatchGroup?)
+    func fetchLocationFile(dispatchGroup: DispatchGroup?, failure: @escaping (Error) -> Void)
     func fetchLocationsFromFile(success: @escaping ([LocationInformation]) -> Void, failure: @escaping (Error) -> Void)
     func setFavouritesLocations(favouritesLocations: [LocationInformation])
     func getFavouritesLocations() -> [LocationInformation]

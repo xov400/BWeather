@@ -122,7 +122,7 @@ final class LocationsViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.activityIndicator.stopAnimating()
                 }
-                print(error.localizedDescription)
+                self.presentAlert(message: error.localizedDescription, handler: nil)
             })
         }
     }

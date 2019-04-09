@@ -1,3 +1,4 @@
 github "1024jp/GzipSwift" "5.0.0"
 github "Alamofire/Alamofire" "4.8.2"
+github "Nicklockwood/GZIP" "1.2.2"
 github "marmelroy/Zip" "1.1.0"

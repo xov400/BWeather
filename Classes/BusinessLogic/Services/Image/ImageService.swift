@@ -8,7 +8,7 @@ import Alamofire
 
 final class ImageService: ImageServiceProtocol {
 
-    func fatchImage(imageName: String, success: @escaping (UIImage) -> Void, failure: @escaping (Error) -> Void) {
+    func fatchImage(imageName: String, success: @escaping (UIImage) -> Void) {
         let endpoint = ImageEndpoint.fatchImage(imageName: imageName)
         let request = Alamofire.request(endpoint.baseURL)
         request.responseData { response in
@@ -22,7 +22,7 @@ final class ImageService: ImageServiceProtocol {
                     }
                 }
             case .failure(let error):
-                failure(error)
+                print("Image not loaded: \(error.localizedDescription)")
             }
         }
     }
