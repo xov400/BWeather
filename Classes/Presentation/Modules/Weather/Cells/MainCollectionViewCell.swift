@@ -14,9 +14,9 @@ class MainCollectionViewCell: UICollectionViewCell {
             internalCollectionView.reloadData()
         }
     }
-    private var currentSelectedIndexPath : IndexPath?
-    private var previousSelectedIndexPath: IndexPath?
-    private var currentDataIsVisible = true {
+    var currentSelectedIndexPath : IndexPath?
+    var previousSelectedIndexPath: IndexPath?
+    var currentDataIsVisible = true {
         didSet {
             currentContainerView.isHidden = !currentDataIsVisible
             forecastContainerView.isHidden = currentDataIsVisible
@@ -331,8 +331,6 @@ extension MainCollectionViewCell: UICollectionViewDataSource, UICollectionViewDe
         if currentDataIsVisible || (!currentDataIsVisible && indexPath == previousSelectedIndexPath) {
             currentDataIsVisible = !currentDataIsVisible
         }
-        
-        delegate?.internalCollectionView(didSelectItemAt: indexPath, currentDataIsVisible: currentDataIsVisible)
 
         // (2) how could I come up it and it-> (1)
         if previousSelectedIndexPath != nil {
@@ -343,6 +341,9 @@ extension MainCollectionViewCell: UICollectionViewDataSource, UICollectionViewDe
         currentSelectedIndexPath = indexPath
         previousSelectedIndexPath = indexPath
         collectionView.reloadItems(at: [indexPath])
+        delegate?.internalCollectionView(didSelectItemAt: indexPath,
+                                         previousSelectedInternalIndexPath: previousSelectedIndexPath,
+                                         currentDataIsVisible: currentDataIsVisible)
     }
 }
 

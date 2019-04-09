@@ -5,7 +5,8 @@ final class WeatherViewController: UIViewController {
 
     // MARK: - Properties
 
-    private var selectedIndexPathInternalCollectionView: IndexPath?
+    private var currentSelectedIndexPathInternalCollectionView: IndexPath?
+    private var previousSelectedIndexPathInternalCollectionView: IndexPath?
     private var currentDataIsVisible = true
 
     typealias Dependencies = HasWeatherService & HasImageService & HasLocationService
@@ -205,6 +206,9 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
             cell.locationForecastModel = models[indexPath.row]
             cell.dependencies = dependencies
             cell.cityNameLabel.text = lacationsForecastsArray[indexPath.row].cityInformation.name
+            cell.currentDataIsVisible = currentDataIsVisible
+            cell.currentSelectedIndexPath = currentSelectedIndexPathInternalCollectionView
+            cell.previousSelectedIndexPath = previousSelectedIndexPathInternalCollectionView
 
             if currentDataIsVisible {
                 collectCurrentMainCollectionViewCell(cell: cell, indexPath: indexPath)
@@ -247,7 +251,7 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
 
     private func collectForecastMainCollectionViewCell(cell: MainCollectionViewCell, indexPath mainIndexPath: IndexPath) {
         if let daysForecastModels = models[mainIndexPath.row].daysForecastModels,
-            let selectedIndexPath = selectedIndexPathInternalCollectionView {
+            let selectedIndexPath = currentSelectedIndexPathInternalCollectionView {
             let dayForecast = daysForecastModels[selectedIndexPath.row]
             var weekday = Calendar.current.component(.weekday, from: dayForecast.date)
             cell.dayOfWeekLabel.text = weekday.getWeekDay()
@@ -316,8 +320,11 @@ extension WeatherViewController: WeatherViewControllerDelegate {
 
 extension WeatherViewController: SelectCellDelegate {
 
-    func internalCollectionView(didSelectItemAt internalIndexPath: IndexPath, currentDataIsVisible: Bool) {
-        selectedIndexPathInternalCollectionView = internalIndexPath
+    func internalCollectionView(didSelectItemAt currentSelectedInternalIndexPath: IndexPath,
+                                previousSelectedInternalIndexPath: IndexPath?,
+                                currentDataIsVisible: Bool) {
+        currentSelectedIndexPathInternalCollectionView = currentSelectedInternalIndexPath
+        previousSelectedIndexPathInternalCollectionView = previousSelectedInternalIndexPath
         self.currentDataIsVisible = currentDataIsVisible
         mainCollectionView.reloadData()
     }
