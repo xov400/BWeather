@@ -156,11 +156,9 @@ extension LocationsViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             favouritesLocations.append(showedLocations[indexPath.row])
             dependencies.locationService.setFavouritesLocations(favouritesLocations: favouritesLocations)
-            presentAlert(message: "Location added") { _ in
-                self.showedLocations = self.favouritesLocations
-                self.inputSearchBar.text = nil
-                self.locationsTableView.reloadData()
-            }
+            showedLocations = self.favouritesLocations
+            inputSearchBar.text = nil
+            locationsTableView.reloadData()
         }
         return indexPath
     }
