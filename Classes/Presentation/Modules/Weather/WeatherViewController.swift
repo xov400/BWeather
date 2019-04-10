@@ -13,7 +13,6 @@ final class WeatherViewController: UIViewController {
     private let dependencies: Dependencies
 
     private var models: [LocationForecastModel] = []
-    private var lacationsForecastsArray: [WeatherForecastResponseModel] = []
 
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
@@ -79,7 +78,6 @@ final class WeatherViewController: UIViewController {
             checkUpdatesLocationFile(dispatchGroup: nil)
             return
         }
-        lacationsForecastsArray = []
         activityIndicatorView.startAnimating()
 
         DispatchQueue.global(qos: .background).async {
@@ -123,7 +121,7 @@ final class WeatherViewController: UIViewController {
         dispatchGroup.enter()
         dependencies.weatherService.fatchWeatherForecasts(location: location,
                                                           success: { weatherForecastModel in
-            self.lacationsForecastsArray.append(weatherForecastModel)
+            model.curentWeatherInformation = weatherForecastModel.threeHoursWeatherInformationArray[0]
             model.daysForecastModels = self.createDaysForecastArray(from: weatherForecastModel)
             dispatchGroup.leave()
         }, failure: { error in
@@ -212,11 +210,11 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(MainCollectionViewCell.self),
                                                       for: indexPath) as! MainCollectionViewCell
 
-        if lacationsForecastsArray.count > 0 {
+        if models.count > 0 {
             cell.delegate = self
             cell.locationForecastModel = models[indexPath.row]
             cell.dependencies = dependencies
-            cell.cityNameLabel.text = lacationsForecastsArray[indexPath.row].cityInformation.name
+            cell.cityNameLabel.text = models[indexPath.row].location.name
             cell.currentDataIsVisible = currentDataIsVisible
             cell.currentSelectedIndexPath = currentSelectedIndexPathInternalCollectionView
             cell.previousSelectedIndexPath = previousSelectedIndexPathInternalCollectionView
@@ -234,14 +232,15 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
     }
 
     private func collectCurrentMainCollectionViewCell(cell: MainCollectionViewCell, indexPath: IndexPath) {
-        let nowForecast = lacationsForecastsArray[indexPath.row].threeHoursWeatherInformationArray[0]
-        cell.sunDrawView.percentage = calculatePercentage(cell: cell)
-        cell.weatherConditionLabel.text = nowForecast.weatherCondition[0].description
-        cell.degreesLabel.text = "\(Int(nowForecast.mainWeatherInformation.temp))\u{00B0}"
-        cell.weatherConditionImageView.image = UIImage(named: "no-image")
-        dependencies.imageService.fatchImage(imageName: nowForecast.weatherCondition[0].iconName, success: { image in
-            cell.weatherConditionImageView.image = image
-        })
+        if let nowForecast = models[indexPath.row].curentWeatherInformation {
+            cell.sunDrawView.percentage = calculatePercentage(cell: cell)
+            cell.weatherConditionLabel.text = nowForecast.weatherCondition[0].description
+            cell.degreesLabel.text = "\(Int(nowForecast.mainWeatherInformation.temp))\u{00B0}"
+            cell.weatherConditionImageView.image = UIImage(named: "no-image")
+            dependencies.imageService.fatchImage(imageName: nowForecast.weatherCondition[0].iconName, success: { image in
+                cell.weatherConditionImageView.image = image
+            })
+        }
     }
 
     private func calculatePercentage(cell: MainCollectionViewCell) -> CGFloat {

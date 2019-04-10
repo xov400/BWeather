@@ -8,6 +8,7 @@ import Foundation
 final class LocationForecastModel {
 
     let location: LocationInformation
+    var curentWeatherInformation: ThreeHoursWeatherInformation?
     var daysForecastModels: [DayForecastModel]?
 
     init(location: LocationInformation) {

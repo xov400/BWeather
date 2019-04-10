@@ -87,8 +87,8 @@ final class LocationsViewController: UIViewController {
 
         let width = view.bounds.width
         activityIndicator.frame = view.bounds
-        inputSearchBar.frame = CGRect(x: 0, y: 20 + safeAreaInsets.top, width: width, height: 50)
-        locationsTableView.frame = CGRect(x: 0, y: 70 + safeAreaInsets.top, width: width, height: view.bounds.height - 70)
+        inputSearchBar.frame = CGRect(x: 0, y: safeAreaInsets.top, width: width, height: 50)
+        locationsTableView.frame = CGRect(x: 0, y: 50 + safeAreaInsets.top, width: width, height: view.bounds.height - 70)
     }
 
     // MARK: - Showing keyboard
@@ -99,10 +99,14 @@ final class LocationsViewController: UIViewController {
 
     @objc private func keyboardWillShow(_ notification: Notification) {
         tapRecognizer.isEnabled = true
+        if let keyboardFrame = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            locationsTableView.contentInset.bottom = keyboardFrame.height
+        }
     }
 
     @objc private func keyboardWillHide(_ notification: Notification) {
         tapRecognizer.isEnabled = false
+        locationsTableView.contentInset.bottom = 0
     }
 
     //MARK: - Logic
@@ -163,6 +167,18 @@ extension LocationsViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { action, indexPath in
+            self.favouritesLocations.remove(at: indexPath.row)
+            self.showedLocations = self.favouritesLocations
+            self.dependencies.locationService.setFavouritesLocations(favouritesLocations: self.favouritesLocations)
+            self.locationsTableView.reloadData()
+        }
+
+        return [deleteAction]
     }
 }
 

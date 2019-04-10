@@ -8,7 +8,7 @@ import UIKit
 final class SettingsViewController: UIViewController {
 
     private enum Constants {
-        static let insets = UIEdgeInsets(top: 40, left: 20, bottom: 20, right: 20)
+        static let insets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
     }
 
     private let labelFont = UIFont(name: "Arial", size: 25.0)
@@ -75,7 +75,9 @@ final class SettingsViewController: UIViewController {
         super.viewDidLayoutSubviews()
         let width = view.bounds.width - Constants.insets.left - Constants.insets.right
         let height = view.bounds.height
-        unitsLabel.frame = CGRect(x: Constants.insets.left, y: Constants.insets.top, width: width, height: 25)
+        unitsLabel.frame = CGRect(x: Constants.insets.left,
+                                  y: Constants.insets.top + safeAreaInsets.top,
+                                  width: width, height: 25)
 
         unitsSegmentedControl.frame = CGRect(x: 70,
                                              y: unitsLabel.frame.maxY + 10,
