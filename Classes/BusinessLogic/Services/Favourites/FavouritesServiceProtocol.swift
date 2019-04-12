@@ -10,6 +10,6 @@ protocol HasFavouritesService {
 }
 
 protocol FavouritesServiceProtocol {
-    func fetchFavouritesLocations() -> [LocationInformation]
-    func saveFavourites(locations: [LocationInformation])
+    func loadFavouritesLocations() -> [LocationInformation]
+    func saveFavouritesLocations(locations: [LocationInformation])
 }

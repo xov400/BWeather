@@ -10,7 +10,7 @@ final class FavouritesService: FavouritesServiceProtocol {
     private let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
     private let favouritesFile = "favouritesLocation.json"
 
-    func fetchFavouritesLocations() -> [LocationInformation] {
+    func loadFavouritesLocations() -> [LocationInformation] {
         guard let favouritesFile = documentsURL.check(forFile: favouritesFile) else {
             return []
         }
@@ -19,20 +19,19 @@ final class FavouritesService: FavouritesServiceProtocol {
             let favouritesLocations = try JSONDecoder().decode([LocationInformation].self, from: data)
             return favouritesLocations
         } catch {
-            print("FavouritesLocations isn't be read")
+            print("Favourites locations isn't be read")
             return []
         }
     }
 
-    func saveFavourites(locations: [LocationInformation]) {
+    func saveFavouritesLocations(locations: [LocationInformation]) {
         do {
             let json = try JSONEncoder().encode(locations)
-            var documentsURL = self.documentsURL
-            documentsURL.appendPathComponent(favouritesFile)
-            print(documentsURL)
-            try json.write(to: documentsURL)
+            var fileURL = self.documentsURL
+            fileURL.appendPathComponent(favouritesFile)
+            try json.write(to: fileURL)
         } catch {
-            print("could't create file text.txt because of error: \(error)")
+            print("Could't create file \(favouritesFile) because of error: \(error)")
         }
     }
 }

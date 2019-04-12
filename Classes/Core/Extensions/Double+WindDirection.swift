@@ -6,7 +6,7 @@
 import Foundation
 
 extension Double {
-    
+
     var windDirection: String {
         if (10.0...80.0).contains(self) {
             return "southwestern"

@@ -1,6 +1,6 @@
 import UIKit
 
-class MainCollectionViewCell: UICollectionViewCell {
+final class MainCollectionViewCell: UICollectionViewCell {
 
     private enum Constants {
         static let insets = UIEdgeInsets(top: 40, left: 20, bottom: 20, right: 20)
@@ -14,7 +14,8 @@ class MainCollectionViewCell: UICollectionViewCell {
             internalCollectionView.reloadData()
         }
     }
-    var currentSelectedIndexPath : IndexPath?
+
+    var currentSelectedIndexPath: IndexPath?
     var previousSelectedIndexPath: IndexPath?
     var currentDataIsVisible = true {
         didSet {
@@ -32,7 +33,7 @@ class MainCollectionViewCell: UICollectionViewCell {
         return label
     }()
 
-    //MARK: currentContainerView
+    // MARK: currentContainerView
 
     private lazy var currentContainerView = UIView()
 
@@ -67,7 +68,7 @@ class MainCollectionViewCell: UICollectionViewCell {
         return label
     }()
 
-    //MARK: forecastContainerView
+    // MARK: forecastContainerView
 
     private lazy var forecastContainerView: UIView = {
         let view = UIView()
@@ -81,7 +82,7 @@ class MainCollectionViewCell: UICollectionViewCell {
         return label
     }()
 
-    private private(set) lazy var dayLabel: UILabel = {
+    private lazy var dayLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Arial", size: 22)
         label.text = "Day"
@@ -103,13 +104,13 @@ class MainCollectionViewCell: UICollectionViewCell {
         return textView
     }()
 
-    private private(set) lazy var separatorView: UIView = {
+    private lazy var separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .gray
         return view
     }()
 
-    private private(set) lazy var nightLabel: UILabel = {
+    private lazy var nightLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Arial", size: 22)
         label.text = "Night"
@@ -205,7 +206,7 @@ class MainCollectionViewCell: UICollectionViewCell {
                                        width: viewsWidth,
                                        height: 16)
 
-        let containerHeight = contentView.bounds.height * 0.7 - cityNameLabel.frame.maxY - lastUpdateLabel.bounds.height - 2 * betweenViewsInset
+        let containerHeight = contentView.bounds.height * 0.7 - cityNameLabel.frame.maxY - lastUpdateLabel.bounds.height - 2 * betweenViewsInset // swiftlint:disable:this line_length
 
         currentContainerView.frame = CGRect(x: Constants.insets.left,
                                             y: cityNameLabel.frame.maxY + betweenViewsInset,
@@ -294,11 +295,13 @@ extension MainCollectionViewCell: UICollectionViewDataSource, UICollectionViewDe
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(InternalCollectionViewCell.self),
-                                                          for: indexPath) as! InternalCollectionViewCell
-            collectInternalCollectionViewCell(cell: cell, indexPath: indexPath)
-            return cell
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let identifier = NSStringFromClass(InternalCollectionViewCell.self)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
+            as! InternalCollectionViewCell // swiftlint:disable:this force_cast
+        collectInternalCollectionViewCell(cell: cell, indexPath: indexPath)
+        return cell
     }
 
     private func collectInternalCollectionViewCell(cell: InternalCollectionViewCell, indexPath: IndexPath) {
@@ -316,7 +319,6 @@ extension MainCollectionViewCell: UICollectionViewDataSource, UICollectionViewDe
             cell.dayTemperatureLabel.text = "\(dayForecast.dayData.temp)\u{00B0}"
             cell.nightTemperatureLabel.text = "\(dayForecast.nightData.temp)\u{00B0}"
 
-            // (1) how could I come up it and it-> (2)
             if currentSelectedIndexPath != nil, currentSelectedIndexPath == indexPath, !currentDataIsVisible {
                 cell.backgroundColor = UIColor.azureRadiance.withAlphaComponent(0.5)
             } else {
@@ -330,7 +332,6 @@ extension MainCollectionViewCell: UICollectionViewDataSource, UICollectionViewDe
             currentDataIsVisible = !currentDataIsVisible
         }
 
-        // (2) how could I come up it and it-> (1)
         if previousSelectedIndexPath != nil {
             if let cell = collectionView.cellForItem(at: previousSelectedIndexPath!) {
                 cell.backgroundColor = UIColor.azureRadiance.withAlphaComponent(1.0)
@@ -347,11 +348,15 @@ extension MainCollectionViewCell: UICollectionViewDataSource, UICollectionViewDe
 
 extension MainCollectionViewCell: UICollectionViewDelegateFlowLayout {
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: (collectionView.bounds.width - 40) / 4, height: collectionView.bounds.height - 10)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 0, left: 5, bottom: contentView.bounds.height * 0.01, right: 5)
     }
 }

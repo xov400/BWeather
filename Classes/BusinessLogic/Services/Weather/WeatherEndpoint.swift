@@ -12,7 +12,7 @@ enum WeatherEndpoint {
 }
 
 extension WeatherEndpoint: Endpoint {
-    
+
     var path: String {
         switch self {
         case .forecast:
@@ -21,7 +21,7 @@ extension WeatherEndpoint: Endpoint {
             return "weather"
         }
     }
-    
+
     var method: HTTPMethod {
         switch self {
         case .forecast:
@@ -30,7 +30,7 @@ extension WeatherEndpoint: Endpoint {
             return .get
         }
     }
-    
+
     var parameters: Parameters? {
         switch self {
         case .forecast(let location, let units):

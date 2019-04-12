@@ -11,8 +11,8 @@ protocol HasWeatherService {
 
 protocol WeatherServiceProtocol {
     func fatchWeatherForecasts(location: String,
-                              success: @escaping (WeatherForecastResponseModel) -> Void,
-                              failure: @escaping (Error) -> Void)
+                               success: @escaping (WeatherForecastResponseModel) -> Void,
+                               failure: @escaping (Error) -> Void)
     func fatchWeatherCurrent(location: String,
                              success: @escaping (WeatherCurrentResponseModel) -> Void,
                              failure: @escaping (Error) -> Void)

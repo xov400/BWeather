@@ -6,7 +6,7 @@
 import Foundation
 
 extension Bundle {
-    
+
     // swiftlint:disable force_cast
     var appIdentifier: String {
         return infoDictionary![kCFBundleIdentifierKey as String] as! String
@@ -27,7 +27,7 @@ extension Bundle {
     var bundleVersion: String {
         return infoDictionary!["CFBundleVersion" as String] as! String
     }
-    
+
     var weatherMapAppID: String {
         return infoDictionary!["WeatherMapAPPID" as String] as! String
     }

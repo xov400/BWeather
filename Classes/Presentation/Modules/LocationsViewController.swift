@@ -21,7 +21,7 @@ final class LocationsViewController: UIViewController {
         searchBar.delegate = self
         return searchBar
     }()
-    
+
     private lazy var locationsTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
@@ -88,7 +88,8 @@ final class LocationsViewController: UIViewController {
         let width = view.bounds.width
         activityIndicator.frame = view.bounds
         inputSearchBar.frame = CGRect(x: 0, y: safeAreaInsets.top, width: width, height: 50)
-        locationsTableView.frame = CGRect(x: 0, y: 50 + safeAreaInsets.top, width: width, height: view.bounds.height - 70)
+        locationsTableView.frame = CGRect(x: 0, y: 50 + safeAreaInsets.top,
+                                          width: width, height: view.bounds.height - 70)
     }
 
     // MARK: - Showing keyboard
@@ -99,7 +100,8 @@ final class LocationsViewController: UIViewController {
 
     @objc private func keyboardWillShow(_ notification: Notification) {
         tapRecognizer.isEnabled = true
-        if let keyboardFrame = (notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        let keyboardFrameEndUserInfoKey = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        if let keyboardFrame = keyboardFrameEndUserInfoKey?.cgRectValue {
             locationsTableView.contentInset.bottom = keyboardFrame.height
         }
     }
@@ -109,7 +111,7 @@ final class LocationsViewController: UIViewController {
         locationsTableView.contentInset.bottom = 0
     }
 
-    //MARK: - Logic
+    // MARK: - Logic
 
     private func fetchData() {
         activityIndicator.startAnimating()
@@ -139,7 +141,8 @@ extension LocationsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = locationsTableView.dequeueReusableCell(withIdentifier: NSStringFromClass(UITableViewCell.self), for: indexPath)
+        let cell = locationsTableView.dequeueReusableCell(withIdentifier: NSStringFromClass(UITableViewCell.self),
+                                                          for: indexPath)
         cell.textLabel?.text = "\(showedLocations[indexPath.row].name) \(showedLocations[indexPath.row].country)"
         return cell
     }
@@ -147,7 +150,7 @@ extension LocationsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         guard let searchText = inputSearchBar.text,
             !searchText.isEmpty,
-            searchText != "",
+            searchText.isEmpty,
             searchText != " " else {
                 return nil
         }
@@ -169,7 +172,7 @@ extension LocationsViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 
-        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { action, indexPath in
+        let deleteAction = UITableViewRowAction(style: .destructive, title: "Delete") { _, indexPath in
             self.favouritesLocations.remove(at: indexPath.row)
             self.showedLocations = self.favouritesLocations
             self.dependencies.locationService.setFavouritesLocations(favouritesLocations: self.favouritesLocations)
@@ -185,7 +188,7 @@ extension LocationsViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if let searchText = searchBar.text,
             !searchText.isEmpty,
-            searchText != "",
+            searchText.isEmpty,
             searchText != " " {
             showedLocations = downloadedLocations
                 .filter { $0.name.lowercased().hasPrefix(searchText.lowercased()) }

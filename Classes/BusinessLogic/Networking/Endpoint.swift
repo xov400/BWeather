@@ -15,19 +15,19 @@ protocol Endpoint {
 }
 
 extension Endpoint {
-    
+
     var baseURL: URL {
         return URL(string: "https://api.openweathermap.org/data/2.5/")!
     }
-    
+
     var parameters: Parameters? {
         return nil
     }
-    
+
     var parameterEncoding: ParameterEncoding {
         return URLEncoding.default
     }
-    
+
     var url: URL {
         return baseURL.appendingPathComponent(path)
     }

@@ -17,10 +17,9 @@ final class LocationService {
     private let archiveName = "city.list.json.gz"
     private var favouritesLocations: [LocationInformation]
 
-
     private init(favouritesService: FavouritesServiceProtocol) {
         self.favouritesService = favouritesService
-        self.favouritesLocations = favouritesService.fetchFavouritesLocations()
+        self.favouritesLocations = favouritesService.loadFavouritesLocations()
     }
 
     static func sharedLocationService(favouritesService: FavouritesServiceProtocol) -> LocationService {
@@ -69,8 +68,9 @@ extension LocationService: LocationServiceProtocol {
         }
     }
 
-    func fetchLocationsFromFile(success: @escaping ([LocationInformation]) -> Void, failure: @escaping (Error) -> Void) {
-        guard let _ = documentsURL.check(forFile: archiveName) else {
+    func fetchLocationsFromFile(success: @escaping ([LocationInformation]) -> Void,
+                                failure: @escaping (Error) -> Void) {
+        guard documentsURL.check(forFile: archiveName) != nil else {
             return
         }
 
@@ -84,14 +84,14 @@ extension LocationService: LocationServiceProtocol {
         do {
             let locationsArray = try JSONDecoder().decode([LocationInformation].self, from: unzipedData)
             success(locationsArray)
-        } catch let error {
+        } catch {
             failure(error)
         }
     }
 
     func setFavouritesLocations(favouritesLocations: [LocationInformation]) {
         self.favouritesLocations = favouritesLocations
-        favouritesService.saveFavourites(locations: favouritesLocations)
+        favouritesService.saveFavouritesLocations(locations: favouritesLocations)
     }
 
     func getFavouritesLocations() -> [LocationInformation] {

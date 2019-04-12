@@ -87,7 +87,7 @@ final class SettingsViewController: UIViewController {
         informationLabel.frame = CGRect(x: Constants.insets.left,
                                         y: view.bounds.height - safeAreaInsets.bottom - 30,
                                         width: width, height: 15)
-        
+
         contactDeveloperButton.frame = CGRect(x: Constants.insets.left,
                                               y: informationLabel.frame.minY - 30,
                                               width: width, height: 20)
@@ -98,7 +98,8 @@ final class SettingsViewController: UIViewController {
     }
 
     @objc private func contactDeveloperButtonPressed(_ sender: UIButton) {
-        let alertController = UIAlertController(title: Bundle.main.appName, message: "It's pointless", preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: Bundle.main.appName, message: "xov400@gmail.com",
+                                                preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alertController, animated: true)
     }

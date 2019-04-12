@@ -38,7 +38,6 @@
 		1F4F52B2225A01F4003FD65D /* LocationInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F527F225A01F4003FD65D /* LocationInformation.swift */; };
 		1F4F52B3225A01F4003FD65D /* MainWeatherInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F5280225A01F4003FD65D /* MainWeatherInformation.swift */; };
 		1F4F52B4225A01F4003FD65D /* ThreeHoursWeatherInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F5281225A01F4003FD65D /* ThreeHoursWeatherInformation.swift */; };
-		1F4F52B5225A01F4003FD65D /* ResponseWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F5282225A01F4003FD65D /* ResponseWeatherModel.swift */; };
 		1F4F52B6225A01F4003FD65D /* AppConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F5283225A01F4003FD65D /* AppConfigurator.swift */; };
 		1F4F52B7225A01F4003FD65D /* SettingsServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F5286225A01F4003FD65D /* SettingsServiceProtocol.swift */; };
 		1F4F52B8225A01F4003FD65D /* SettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4F5287225A01F4003FD65D /* SettingsService.swift */; };
@@ -92,7 +91,6 @@
 		1F4F527F225A01F4003FD65D /* LocationInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationInformation.swift; sourceTree = "<group>"; };
 		1F4F5280225A01F4003FD65D /* MainWeatherInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainWeatherInformation.swift; sourceTree = "<group>"; };
 		1F4F5281225A01F4003FD65D /* ThreeHoursWeatherInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeHoursWeatherInformation.swift; sourceTree = "<group>"; };
-		1F4F5282225A01F4003FD65D /* ResponseWeatherModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseWeatherModel.swift; sourceTree = "<group>"; };
 		1F4F5283225A01F4003FD65D /* AppConfigurator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfigurator.swift; sourceTree = "<group>"; };
 		1F4F5286225A01F4003FD65D /* SettingsServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsServiceProtocol.swift; sourceTree = "<group>"; };
 		1F4F5287225A01F4003FD65D /* SettingsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsService.swift; sourceTree = "<group>"; };
@@ -272,7 +270,6 @@
 				1F4F527A225A01F4003FD65D /* LocationForecastModel.swift */,
 				1F4F527B225A01F4003FD65D /* DayForecastModel.swift */,
 				1F4F527C225A01F4003FD65D /* WeatherForecastResponseModel */,
-				1F4F5282225A01F4003FD65D /* ResponseWeatherModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -378,6 +375,7 @@
 				1F2A17C4225A00A500AED2F2 /* Frameworks */,
 				1F2A17C5225A00A500AED2F2 /* Resources */,
 				1FED2016225A03DA0029146D /* Carthage */,
+				1F0902C4225F7111003D7C8D /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -434,6 +432,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1F0902C4225F7111003D7C8D /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"error: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\nexit 1\nfi\n";
+		};
 		1FED2016225A03DA0029146D /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -472,7 +488,6 @@
 				1F4F52A2225A01F4003FD65D /* UIViewController+Alert.swift in Sources */,
 				1F4F52B3225A01F4003FD65D /* MainWeatherInformation.swift in Sources */,
 				1F4F52C3225A01F4003FD65D /* WeatherService.swift in Sources */,
-				1F4F52B5225A01F4003FD65D /* ResponseWeatherModel.swift in Sources */,
 				1F4F52A3225A01F4003FD65D /* URL+Check.swift in Sources */,
 				1F4F52B9225A01F4003FD65D /* Services.swift in Sources */,
 				1F4F52BD225A01F4003FD65D /* ImageServiceProtocol.swift in Sources */,

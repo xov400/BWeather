@@ -5,7 +5,6 @@
 
 import UIKit
 
-
 final class AppConfigurator {
 
     static func configure(_ application: UIApplication, with launchOptions: LaunchOptions?) {

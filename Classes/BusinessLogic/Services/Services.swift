@@ -9,7 +9,7 @@ typealias HasServices = HasWeatherService &
     HasLocationService &
     HasFavouritesService
 
-var Services: MainServices {
+var Services: MainServices { // swiftlint:disable:this identifier_name
     return MainServices()
 }
 
@@ -18,5 +18,6 @@ final class MainServices: HasServices {
     lazy var settingsService: SettingsServiceProtocol = SettingsService.create()
     lazy var weatherService: WeatherServiceProtocol = WeatherService(settingsSevice: settingsService)
     lazy var imageService: ImageServiceProtocol = ImageService()
-    lazy var locationService: LocationServiceProtocol = LocationService.sharedLocationService(favouritesService: favouritesService)
+    lazy var locationService: LocationServiceProtocol =
+        LocationService.sharedLocationService(favouritesService: favouritesService)
 }

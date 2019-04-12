@@ -6,7 +6,7 @@
 import Foundation
 
 extension Int {
-    
+
     mutating func getShortWeekDay() -> String {
         switch self {
         case 1:

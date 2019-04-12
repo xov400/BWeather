@@ -1,12 +1,11 @@
 import UIKit
 
-
 final class WeatherViewController: UIViewController {
 
     // MARK: - Properties
 
-    private var currentSelectedIndexPathInternalCollectionView: IndexPath?
-    private var previousSelectedIndexPathInternalCollectionView: IndexPath?
+    private var currentIndexPathInternalCollectionView: IndexPath?
+    private var previousIndexPathInternalCollectionView: IndexPath?
     private var currentDataIsVisible = true
 
     typealias Dependencies = HasWeatherService & HasImageService & HasLocationService
@@ -64,13 +63,15 @@ final class WeatherViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        models = dependencies.locationService.getFavouritesLocations().map { locationInformation -> LocationForecastModel in
-            return LocationForecastModel(location: locationInformation)
-        }
+        models = dependencies.locationService
+            .getFavouritesLocations()
+            .map { locationInformation -> LocationForecastModel in
+                return LocationForecastModel(location: locationInformation)
+            }
         fetchData()
     }
 
-    //    MARK: - Fetch data
+    // MARK: - Fetch data
 
     private func fetchData() {
         if models.count == 0 {
@@ -201,14 +202,16 @@ final class WeatherViewController: UIViewController {
 // MARK: - CollectionView delegates
 
 extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return models.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NSStringFromClass(MainCollectionViewCell.self),
-                                                      for: indexPath) as! MainCollectionViewCell
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let identifier = NSStringFromClass(MainCollectionViewCell.self)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath)
+            as! MainCollectionViewCell // swiftlint:disable:this force_cast
 
         if models.count > 0 {
             cell.delegate = self
@@ -216,8 +219,8 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
             cell.dependencies = dependencies
             cell.cityNameLabel.text = models[indexPath.row].location.name
             cell.currentDataIsVisible = currentDataIsVisible
-            cell.currentSelectedIndexPath = currentSelectedIndexPathInternalCollectionView
-            cell.previousSelectedIndexPath = previousSelectedIndexPathInternalCollectionView
+            cell.currentSelectedIndexPath = currentIndexPathInternalCollectionView
+            cell.previousSelectedIndexPath = previousIndexPathInternalCollectionView
 
             if currentDataIsVisible {
                 collectCurrentMainCollectionViewCell(cell: cell, indexPath: indexPath)
@@ -237,7 +240,8 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
             cell.weatherConditionLabel.text = nowForecast.weatherCondition[0].description
             cell.degreesLabel.text = "\(Int(nowForecast.mainWeatherInformation.temp))\u{00B0}"
             cell.weatherConditionImageView.image = UIImage(named: "no-image")
-            dependencies.imageService.fatchImage(imageName: nowForecast.weatherCondition[0].iconName, success: { image in
+            dependencies.imageService.fatchImage(imageName: nowForecast.weatherCondition[0].iconName,
+                                                 success: { image in
                 cell.weatherConditionImageView.image = image
             })
         }
@@ -259,7 +263,7 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
 
     private func collectForecastMainCollectionViewCell(cell: MainCollectionViewCell, indexPath mainIndexPath: IndexPath) {
         if let daysForecastModels = models[mainIndexPath.row].daysForecastModels,
-            let selectedIndexPath = currentSelectedIndexPathInternalCollectionView {
+            let selectedIndexPath = currentIndexPathInternalCollectionView {
             let dayForecast = daysForecastModels[selectedIndexPath.row]
             var weekday = Calendar.current.component(.weekday, from: dayForecast.date)
             cell.dayOfWeekLabel.text = weekday.getWeekDay()
@@ -309,10 +313,11 @@ extension WeatherViewController: UICollectionViewDataSource, UICollectionViewDel
 
 extension WeatherViewController: UICollectionViewDelegateFlowLayout {
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: mainCollectionView.bounds.width, height: mainCollectionView.bounds.height)
     }
-    
 }
 
 extension WeatherViewController: WeatherViewControllerDelegate {
@@ -327,8 +332,8 @@ extension WeatherViewController: SelectCellDelegate {
     func internalCollectionView(didSelectItemAt currentSelectedInternalIndexPath: IndexPath,
                                 previousSelectedInternalIndexPath: IndexPath?,
                                 currentDataIsVisible: Bool) {
-        currentSelectedIndexPathInternalCollectionView = currentSelectedInternalIndexPath
-        previousSelectedIndexPathInternalCollectionView = previousSelectedInternalIndexPath
+        currentIndexPathInternalCollectionView = currentSelectedInternalIndexPath
+        previousIndexPathInternalCollectionView = previousSelectedInternalIndexPath
         self.currentDataIsVisible = currentDataIsVisible
         mainCollectionView.reloadData()
     }

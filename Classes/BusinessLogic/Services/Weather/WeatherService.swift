@@ -13,10 +13,10 @@ final class WeatherService: WeatherServiceProtocol {
     init(settingsSevice: SettingsServiceProtocol) {
         self.settingsSevice = settingsSevice
     }
-    
+
     func fatchWeatherForecasts(location: String,
-                              success: @escaping (WeatherForecastResponseModel) -> Void,
-                              failure: @escaping (Error) -> Void) {
+                               success: @escaping (WeatherForecastResponseModel) -> Void,
+                               failure: @escaping (Error) -> Void) {
         let endpoint = WeatherEndpoint.forecast(location: location,
                                                 units: settingsSevice.getUnits())
         let request = Alamofire.request(endpoint.url,
@@ -28,7 +28,8 @@ final class WeatherService: WeatherServiceProtocol {
             case .success:
                 if let data = response.data {
                     do {
-                        let weatherForecastModel = try JSONDecoder().decode(WeatherForecastResponseModel.self, from: data)
+                        let weatherForecastModel = try JSONDecoder().decode(WeatherForecastResponseModel.self,
+                                                                            from: data)
                         success(weatherForecastModel)
                     } catch {
                         failure(error)

@@ -5,9 +5,10 @@
 
 import UIKit
 
-class InternalCollectionViewCell: UICollectionViewCell {
+final class InternalCollectionViewCell: UICollectionViewCell {
 
     var selectionCellViewisHidden = true
+
     private(set) lazy var dayLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -21,6 +22,8 @@ class InternalCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         label.textColor = UIColor.white
         label.font = UIFont(name: "Arial", size: 12)
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 3
         return label
     }()
 
@@ -37,7 +40,7 @@ class InternalCollectionViewCell: UICollectionViewCell {
         label.font = UIFont(name: "Arial", size: 18)
         return label
     }()
-    
+
     private(set) lazy var nightTemperatureLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
@@ -68,11 +71,11 @@ class InternalCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         let width = contentView.bounds.width
-        let heigth = contentView.bounds.height
-        dayLabel.frame = CGRect(x: 0, y: 0, width: width, height: heigth * 0.15)
-        weatherConditionLabel.frame = CGRect(x: 0, y: heigth * 0.15, width: width, height: heigth * 0.15)
-        weatherConditionImageView.frame = CGRect(x: 0, y: heigth * 0.3, width: width, height: heigth * 0.4)
-        dayTemperatureLabel.frame = CGRect(x: 0, y: heigth * 0.7, width: width, height: heigth * 0.15)
-        nightTemperatureLabel.frame = CGRect(x: 0, y: heigth * 0.85, width: width, height: heigth * 0.15)
+        let heigth = contentView.bounds.height - 55
+        dayLabel.frame = CGRect(x: 0, y: 5, width: width, height: 20)
+        weatherConditionLabel.frame = CGRect(x: 0, y: 25, width: width, height: 30)
+        weatherConditionImageView.frame = CGRect(x: 0, y: 55, width: width, height: heigth * 0.55)
+        dayTemperatureLabel.frame = CGRect(x: 0, y: heigth * 0.55 + 55, width: width, height: heigth * 0.2)
+        nightTemperatureLabel.frame = CGRect(x: 0, y: heigth * 0.75 + 55, width: width, height: heigth * 0.2)
     }
 }

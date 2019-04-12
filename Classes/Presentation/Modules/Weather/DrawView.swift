@@ -53,12 +53,16 @@ final class DrawView: UIView {
         sunPathLayer.frame = bounds
         sunLayer.frame = bounds
     }
-    
+
     override func draw(_ rect: CGRect) {
         let width = bounds.width
         let scaleRadius = width * 0.4
         let center = CGPoint(x: width / 2, y: width / 2)
-        let sunLinePath = UIBezierPath(arcCenter: center, radius: scaleRadius, startAngle: .pi, endAngle: 0, clockwise: true)
+        let sunLinePath = UIBezierPath(arcCenter: center,
+                                       radius: scaleRadius,
+                                       startAngle: .pi,
+                                       endAngle: 0,
+                                       clockwise: true)
         sunPathLayer.path = sunLinePath.cgPath
 
         let corner = CGFloat(200 + percentage * 140)

@@ -13,14 +13,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     weak var delegate: WeatherViewControllerDelegate?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: LaunchOptions?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: LaunchOptions?) -> Bool {
         AppConfigurator.configure(application, with: launchOptions)
         window = UIWindow(frame: UIScreen.main.bounds)
 
         let tabBarController = UITabBarController()
 
         let settingsViewController = SettingsViewController(dependencies: Services)
-        settingsViewController.tabBarItem = UITabBarItem(title: "SETTINGS", image: UIImage(named: "icons8-settings"), tag: 0)
+        settingsViewController.tabBarItem = UITabBarItem(title: "SETTINGS",
+                                                         image: UIImage(named: "icons8-settings"),
+                                                         tag: 0)
 
         let weatherViewController = WeatherViewController(dependencies: Services)
         self.delegate = weatherViewController
